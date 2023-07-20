@@ -1,0 +1,20 @@
+.rootBoard {
+    width: 90vw;
+    max-width: 90vh;
+    height: 90vw;
+    max-height: 90vh;
+    border: 1px solid black;
+    box-sizing: border-box;
+
+    display: grid;
+    grid-template-columns: repeat(8, 12.5%);
+    grid-template-rows: 12.5%;
+
+    .cage {
+        border: 1px solid black;
+    }
+
+    .blackCage {
+        background-color: gray
+    }
+};
