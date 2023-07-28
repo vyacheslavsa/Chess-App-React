@@ -1,42 +1,45 @@
 /* eslint-disable react/prop-types */
 import styles from "./Board.module.scss";
 import cn from "classnames";
-import BoardService from "../../services/BoardService";
+import Board from "../../services/Board";
 import { useEffect, useState } from "react";
+import Figure from "../../services/Figure";
+import PawnSVGVector from "../../assets/Components/PawnSVGVector";
+import { BLACK_FIGURES_COLORS } from "../../constans";
 
-const Board = ({ teamBlack }) => {
-  const createBoard = new BoardService();
-  const arrFields = createBoard.generateFields();
-  let isEvenNumber = true;
+const BoardComponent = () => {
+  const myBoard = new Board();
 
-  const [fields, setFields] = useState([]);
+  const arrFields = myBoard.generateCell();
+  const pawnChess = new Figure(
+    { positionX: "c", positionY: 7 },
+    <PawnSVGVector backgroundColor={BLACK_FIGURES_COLORS.BACKGROUND} borderColor={BLACK_FIGURES_COLORS.BORDER} />
+  );
+
+  const [stateCell, setStateCell] = useState(arrFields);
 
   useEffect(() => {
-    teamBlack.forEach((figure) => {
-      const findField = arrFields.find((field) => {
-        return field.positionX === figure.startPosition.x && field.positionY === figure.startPosition.y;
-      });
-      findField.figure = figure;
+    setStateCell((prevCells) => {
+      const copyPrevCells = [...prevCells];
+      copyPrevCells[1].figure = pawnChess;
+      return copyPrevCells;
     });
-    setFields(arrFields);
-  }, [teamBlack]);
-
-  console.log(fields);
+  }, []);
 
   return (
+   
     <div className={styles.rootBoard}>
-      {fields.map((cage, i) => {
-        isEvenNumber = i > 7 && i % 8 === 0 ? !isEvenNumber : isEvenNumber;
-        const isBlackCage = i % 2 === 0;
-
+      {stateCell.map((cell, i) => {
         return (
-          <div className={cn(styles.cage, { [styles.blackCage]: isEvenNumber ? isBlackCage : !isBlackCage })} key={i}>
-            {cage?.figure?.svgComponent}
+          <div className={cn(styles.cage, { [styles.blackCage]: cell.colorCell === "black" })} key={i}>
+            {cell?.figure?.logo}
           </div>
         );
       })}
     </div>
+    
+    
   );
 };
 
-export default Board;
+export default BoardComponent;

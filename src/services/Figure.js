@@ -1,6 +1,10 @@
 export default class Figure {
-  constructor(startPosition, svgComponent) {
-    this.startPosition = startPosition;
-    this.svgComponent = svgComponent;
+  constructor(position, logo) {
+    this.position = position;
+    this.logo = logo;
+  }
+
+  changePosition(newPosition) {
+    this.position = newPosition;
   }
 }
